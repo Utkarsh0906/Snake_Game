@@ -1,16 +1,20 @@
+#importing necessary modules
 from turtle import Turtle
 import os
+
+#creating file to store high scores
 if not os.path.isfile("score.txt"):
     file = open("score.txt","w+")
     file.write("0")
     file.close()
 
+#opening file to store high scores
 file = open("score.txt","r+")
     
 class ScoreBoard(Turtle):
     
     #creating scoreboard
-    high_score = int(file.readline())
+    high_score = int(file.readline()) #extracting previous high score 
     score = -1
     def __init__(self):
         super().__init__()
@@ -30,11 +34,14 @@ class ScoreBoard(Turtle):
     
     #displaying gameover
     def game_over(self):
+        #updating high score
         if(self.score>self.high_score):
             self.high_score = self.score
             file.seek(0)
             file.truncate()
             file.write(str(self.high_score))
+
+        #displaying gameover screen
         self.clear()
         self.goto(0,0)
         self.write("GAME OVER!!",align = "Center",font = ("Arial",50,"bold"))
@@ -43,6 +50,7 @@ class ScoreBoard(Turtle):
         self.goto(0,-100)
         self.write(f"High Score = {self.high_score}",align = "Center",font = ("Arial",25,"bold"))
     
+    #closing the opened file
     def __del__(self):
         file.close()
         
