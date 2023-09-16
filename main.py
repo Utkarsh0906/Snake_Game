@@ -13,6 +13,9 @@ screen.title("Snake Game")
 screen.tracer(0)
 screen.listen()
 
+#initializing variables
+speed = 0.09
+
 #creating objects
 snake = Snake()
 food = Food()
@@ -23,19 +26,21 @@ game_on = True
 while(game_on):
     snake.move()
     screen.update()
-    time.sleep(0.09)  
+    time.sleep(speed)  
     head = snake.head
     
     #Wall Collision
-    if(head.xcor()>=330 or  head.xcor()<= -330 or head.ycor()>=330 or head.ycor()<= -330): #stop the snake when it reaches the border
-        game_on = False
-        scoreboard.game_over()
+    if(head.xcor()>=330 or  head.xcor()<= -330):
+        head.goto(-1*head.xcor(), head.ycor()) 
+    if (head.ycor()>=330 or head.ycor()<= -330): #stop the snake when it reaches the border
+        head.goto(head.xcor(), -1*head.ycor())
     
     #Food Acquired
     if(head.distance(food)<20):
         food.new_food()
         scoreboard.new_score()
         snake.extend()
+        speed *= 0.9        
     
     #Tail Collision
     for i in snake.turtles[1:]:
@@ -50,7 +55,4 @@ while(game_on):
     screen.onkey(key="Down", fun=snake.turn_downwards)
 
 #exiting turtle
-screen.exitonclick()    
-
-
-
+screen.exitonclick()
